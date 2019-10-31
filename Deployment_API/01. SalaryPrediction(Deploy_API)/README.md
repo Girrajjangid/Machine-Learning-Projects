@@ -2,9 +2,6 @@
 
 In this project we deploy salary prediction model as a flask API.
 
-### Prerequisites
-```pip install -r requirements.txt```
-
 ### Project Structure
 This project has four major parts :
 1. _model.py_ - This file contain Modelling.
@@ -15,21 +12,34 @@ This project has four major parts :
 
 ### Steps to run the project.
 
-1. Ensure that you are in the project home directory. Create the machine learning model by running below command -
+### Prerequisites
+Ensure that you are in the project home directory.
+Run this command into terminal. It ensures that you have the correct libraries. It's better to see requirements.txt file.
+
+1. 
+```
+pip install -r requirements.txt
+```
+
+2. Create the machine learning model by running below command -
 ```
 python model.py
 ```
-This would create a serialized version of our model into a file model.pkl
+Expected Output ```Model Saved Successfully.```
+This would create a serialized file of our model as model.pkl
 
-2. Run app.py using below command to start Flask API
+
+3. Run api.py using below command to start Flask API
 ```
-python app.py
+python api.py
 ```
+It's always better to write model and API code in different files.
+This create a WSGI mini server which responsible for communication between web to python.
 By default, flask will run on port 5000.
 
-3. Navigate to URL http://localhost:5000
+5. Navigate to URL http://localhost:5000/
+Now you will see something like this:
 
-You should be able to view the homepage as below :
 ![alt text](http://www.thepythonblog.com/wp-content/uploads/2019/02/Homepage.png)
 
 Enter valid numerical values in all 3 input boxes and hit Predict.
