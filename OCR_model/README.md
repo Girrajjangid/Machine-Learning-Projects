@@ -53,5 +53,5 @@ I even try to find country name by using context text related to that country. B
 ## Note:
 For more detailed implementation please click [Here](https://github.com/Girrajjangid/Machine-learning-projects-deployment/tree/master/03.%20TextExtractor_OCR(Deploy_AWS))
 
-
+I also explain working in `model.py` file 
 

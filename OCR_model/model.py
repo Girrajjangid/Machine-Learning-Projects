@@ -1,3 +1,4 @@
+# Import useful libraries
 import re
 import cv2
 import sys
@@ -11,6 +12,10 @@ pt.pytesseract.tesseract_cmd = 'C:/Program Files/Tesseract-OCR/tesseract.exe'
 class DateFinder():
     
     def __init__(self):
+        """
+        Initialize five different regular expression pattern 
+        which extract all type of dates from string.
+        """
         self.pattern1 = r"(\d{1,4}([.'’~\-/])\d{1,2}([.'’~\-/])\d{1,4})"
         self.pattern2 = r"(\d{1,4}([.'’~\-/\s])[ADFJMNOSadfjmnos]\w*([.'’~\-/\s]*)\d{1,4})"
         self.pattern3 = r"([ADFJMNOSadfjmnos]\w*\s\d{1,4}([,'’~.\-/\s]*)([.'’~\-/\s])\d{1,4})"
@@ -19,6 +24,19 @@ class DateFinder():
         self.dates = []
         
     def find_date(self, img_str):
+        """
+        img_str: contains all text which extracted from tesseract OCR Engine
+        
+        description: 
+        We pass all 5 patterns in img_str to extract
+        only date formated strings from img_str.
+        After, extracted pattern stored in date_find list. Prepare
+        extracted patterns to convert into %Y-%m-%d format by remove
+        unnecessary symbols like (",~).
+        
+        At the end stored patterns in dates list.
+
+        """
         date_find = []
         for i in img_str:
             for j in (re.search(regex,i) for regex in [self.pattern1, self.pattern2, self.pattern3, self.pattern4]):
@@ -43,6 +61,34 @@ class DateFinder():
                 continue
                 
     def extract_img_str(self,path):
+        """
+        path: Contains path of input file
+        description: 
+        
+        1. Pass config into tesseract. It said 
+        tesseract to use LSTM cell while extracting text from image.
+        
+        2. Instead of passing single image into tesseract. We pass 12
+        different images.
+        
+        3. Apply 3 different filters to image. In result we get
+        three base images.
+        
+        4. We use four different pre-processing technique
+        to perfectly extract all text from image.
+        
+        gaussian_filter = (3,3), (5,5). (7,7)
+        ##########################################################################################################################
+        #(i)  ==> img ================================================================================> tesseract|               #
+        #(ii) ==> img => resize*3 => grayscale => gaussian_filter ====================================> tesseract|___ MAX VOTING #
+        #(iii)==> img => resize*3 => grayscale => gaussian_filter => Binarization(threshold) =========> tesseract|               #
+        #(iv) ==> img => resize*3 => grayscale => gaussian_filter => Binarization(AdaptiveThreshold) => tesseract|               #
+        ##########################################################################################################################
+        
+        5. We pass each gaussian_filter to all 4 processing.
+        At the end, We take Max Voting and consider only those
+        dates.
+        """
         config = ("-l eng --oem 1 --psm 3")
         filters = [3,5,7]
         for i in filters:
